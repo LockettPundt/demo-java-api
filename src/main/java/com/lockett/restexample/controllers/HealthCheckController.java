@@ -4,12 +4,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lockett.restexample.models.HealthCheckResponse;
+
 @RestController
 @RequestMapping("/healthcheck")
-public class HealthCheck {
+public class HealthCheckController {
 
   @GetMapping("/")
-  public String getHealthCheck() {
-    return "HI";
+  public HealthCheckResponse getHealthCheck() {
+    return new HealthCheckResponse("The server is running.", 200);
   }
 }
