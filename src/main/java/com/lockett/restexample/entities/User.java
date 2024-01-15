@@ -7,11 +7,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "users")
 public class User {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(name = "first_name", nullable = false)
@@ -29,7 +31,8 @@ public class User {
   @Column(name = "updated_at", nullable = false)
   private Timestamp updatedAt;
 
-  // TODO Add join column for readings.
+  public User() {
+  }
 
   public void setId(Long id) {
     this.id = id;

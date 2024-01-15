@@ -3,10 +3,13 @@ spring:
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: bp_db_schema
   datasource:
-    platform: postgres
+    # platform: postgres
     url: jdbc:postgresql://localhost:5432/bp_db
     username: postgres
     password: postgres
-    driverClassName: org.postgresql.Driver
+    driver-class-name: org.postgresql.Driver

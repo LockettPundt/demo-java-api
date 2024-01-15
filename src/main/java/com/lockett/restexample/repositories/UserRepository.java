@@ -1,5 +1,8 @@
 package com.lockett.restexample.repositories;
 
-public class UserRepository {
-  // TODO Create user repository
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.lockett.restexample.entities.User;
+
+public interface UserRepository extends JpaRepository<User, Long> {
 }
