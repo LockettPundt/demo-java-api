@@ -1,9 +1,11 @@
 package com.lockett.restexample.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +24,12 @@ public class BloodPressureReadingController {
   @GetMapping("/")
   @Transactional
   public List<BloodPressureReading> getAllReadings() {
-    // TODO update return object to ResponseEntity with "data" property.
     return bloodPressureReadingRepository.findAll();
+  }
+
+  @GetMapping("/{id}")
+  @Transactional
+  public Optional<BloodPressureReading> getUserById(@PathVariable(value = "id") long id) {
+    return bloodPressureReadingRepository.findById(id);
   }
 }
