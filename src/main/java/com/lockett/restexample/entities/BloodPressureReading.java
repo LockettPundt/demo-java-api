@@ -20,7 +20,7 @@ public class BloodPressureReading {
   private Long userId;
 
   @Column(name = "systolic_reading")
-  private int stystolicReading;
+  private int systolicReading;
 
   @Column(name = "diastolic_reading")
   private int diastolicReading;
@@ -28,10 +28,10 @@ public class BloodPressureReading {
   @Column(name = "comments", nullable = true)
   private String comments;
 
-  @Column(name = "created_at", nullable = false)
+  @Column(name = "created_at")
   private Timestamp createdAt;
 
-  @Column(name = "updated_at", nullable = false)
+  @Column(name = "updated_at")
   private Timestamp updatedAt;
 
   public void setId(Long id) {
@@ -50,12 +50,12 @@ public class BloodPressureReading {
     return userId;
   }
 
-  public void setStystolicReading(int stystolicReading) {
-    this.stystolicReading = stystolicReading;
+  public void setSystolicReading(int systolicReading) {
+    this.systolicReading = systolicReading;
   }
 
-  public int getStystolicReading() {
-    return stystolicReading;
+  public int getSystolicReading() {
+    return systolicReading;
   }
 
   public void setDiastolicReading(int diastolicReading) {
