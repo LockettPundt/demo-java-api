@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,11 +40,13 @@ public class BloodPressureReadingController {
 
     BodyDto<List<BloodPressureReading>> body = new BodyDto<List<BloodPressureReading>>();
     body.setData(bloodPressureReadingRepository.findAll());
+
     return ResponseEntity.ok(body);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<BodyDto<BloodPressureReading>> getUserById(@PathVariable(value = "id") long id) {
+  public ResponseEntity<BodyDto<BloodPressureReading>> getBloodPressureReadingById(
+      @Validated @PathVariable(value = "id") long id) {
     Optional<BloodPressureReading> optionalBloodPressureReading = bloodPressureReadingRepository.findById(id);
 
     if (optionalBloodPressureReading.isPresent()) {
@@ -51,9 +54,11 @@ public class BloodPressureReadingController {
 
       BodyDto<BloodPressureReading> body = new BodyDto<BloodPressureReading>();
       body.setData(optionalBloodPressureReading.get());
+
       return ResponseEntity.ok(body);
     } else {
       logger.error("No blood pressure reading found with id...", id);
+
       return ResponseEntity.notFound().build();
     }
   }
@@ -71,9 +76,33 @@ public class BloodPressureReadingController {
       BloodPressureReading newReading = bloodPressureReadingRepository.save(bloodPressureReadingRequest);
       BodyDto<BloodPressureReading> body = new BodyDto<>();
       body.setData(newReading);
+
       return ResponseEntity.ok(body);
     } catch (Exception e) {
       logger.error("Error creating new blood pressure reading...", e);
+
+      return ResponseEntity.internalServerError().build();
+    }
+  }
+
+  @DeleteMapping("/delete-reading/{id}")
+  @Transactional
+  public ResponseEntity<BodyDto<Long>> deleteBloodPressureReading(@Validated @PathVariable(value = "id") long id) {
+    try {
+      Optional<BloodPressureReading> bloodPressureReading = bloodPressureReadingRepository.findById(id);
+      if (bloodPressureReading.isPresent()) {
+        BodyDto<Long> body = new BodyDto<Long>();
+        body.setData(id);
+        bloodPressureReadingRepository.deleteById(id);
+
+        return ResponseEntity.ok(body);
+      } else {
+        logger.error("No blood pressure reading found ...");
+
+        return ResponseEntity.noContent().build();
+      }
+    } catch (Exception e) {
+      logger.error("Error deleting blood pressure reading...", e);
 
       return ResponseEntity.internalServerError().build();
     }
