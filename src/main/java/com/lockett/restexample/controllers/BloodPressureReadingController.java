@@ -1,11 +1,6 @@
 package com.lockett.restexample.controllers;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lockett.restexample.entities.BloodPressureReading;
 import com.lockett.restexample.models.BodyDto;
-import com.lockett.restexample.repositories.BloodPressureReadingRepository;
+import com.lockett.restexample.service.BloodPressureReadingServiceInterface;
 
 import jakarta.transaction.Transactional;
 
@@ -29,82 +24,34 @@ import jakarta.transaction.Transactional;
 @RequestMapping("/readings")
 public class BloodPressureReadingController {
 
-  private static final Logger logger = LoggerFactory.getLogger(BloodPressureReadingController.class);
-
   @Autowired
-  BloodPressureReadingRepository bloodPressureReadingRepository;
+  BloodPressureReadingServiceInterface bloodPressureReadingService;
 
   @GetMapping("/")
   public ResponseEntity<BodyDto<List<BloodPressureReading>>> getAllReadings() {
-    logger.info("Fetching all readings...");
-
-    BodyDto<List<BloodPressureReading>> body = new BodyDto<List<BloodPressureReading>>();
-    body.setData(bloodPressureReadingRepository.findAll());
-
-    return ResponseEntity.ok(body);
+    return bloodPressureReadingService.getAllReadings();
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<BodyDto<BloodPressureReading>> getBloodPressureReadingById(
       @Validated @PathVariable(value = "id") long id) {
-    Optional<BloodPressureReading> optionalBloodPressureReading = bloodPressureReadingRepository.findById(id);
-
-    if (optionalBloodPressureReading.isPresent()) {
-      logger.info("Blood pressure reading found with id...", id);
-
-      BodyDto<BloodPressureReading> body = new BodyDto<BloodPressureReading>();
-      body.setData(optionalBloodPressureReading.get());
-
-      return ResponseEntity.ok(body);
-    } else {
-      logger.error("No blood pressure reading found with id...", id);
-
-      return ResponseEntity.notFound().build();
-    }
+    return bloodPressureReadingService.getBloodPressureReadingById(id);
   }
 
   @PostMapping("/add-reading")
   @Transactional
   public ResponseEntity<BodyDto<BloodPressureReading>> addBloodPressureReading(
       @Validated @RequestBody @NonNull BloodPressureReading bloodPressureReadingRequest) {
-    try {
-      logger.info("Creating new blood pressure reading...");
-
-      Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
-      bloodPressureReadingRequest.setCreatedAt(timeStamp);
-      bloodPressureReadingRequest.setUpdatedAt(timeStamp);
-      BloodPressureReading newReading = bloodPressureReadingRepository.save(bloodPressureReadingRequest);
-      BodyDto<BloodPressureReading> body = new BodyDto<>();
-      body.setData(newReading);
-
-      return ResponseEntity.ok(body);
-    } catch (Exception e) {
-      logger.error("Error creating new blood pressure reading...", e);
-
-      return ResponseEntity.internalServerError().build();
-    }
+    return bloodPressureReadingService.addBloodPressureReading(bloodPressureReadingRequest);
   }
 
   @DeleteMapping("/delete-reading/{id}")
   @Transactional
   public ResponseEntity<BodyDto<Long>> deleteBloodPressureReading(@Validated @PathVariable(value = "id") long id) {
-    try {
-      Optional<BloodPressureReading> bloodPressureReading = bloodPressureReadingRepository.findById(id);
-      if (bloodPressureReading.isPresent()) {
-        BodyDto<Long> body = new BodyDto<Long>();
-        body.setData(id);
-        bloodPressureReadingRepository.deleteById(id);
-
-        return ResponseEntity.ok(body);
-      } else {
-        logger.error("No blood pressure reading found ...");
-
-        return ResponseEntity.noContent().build();
-      }
-    } catch (Exception e) {
-      logger.error("Error deleting blood pressure reading...", e);
-
-      return ResponseEntity.internalServerError().build();
-    }
+    return bloodPressureReadingService.deleteBloodPressureReading(id);
   }
+
+  // TODO PUT endpoint
+  // TODO PUT Request DTO
+  // TODO Post Request DTO
 }
