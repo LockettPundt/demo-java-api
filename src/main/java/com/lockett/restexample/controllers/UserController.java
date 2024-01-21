@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lockett.restexample.entities.User;
 import com.lockett.restexample.models.BodyDto;
+import com.lockett.restexample.models.UserRequestDto;
 import com.lockett.restexample.repositories.UserRepository;
 import com.lockett.restexample.service.impl.UserService;
 
@@ -39,7 +40,7 @@ public class UserController {
   }
 
   @PostMapping("/add-user")
-  public ResponseEntity<BodyDto<User>> addUser(@Validated @RequestBody User userRequest) {
+  public ResponseEntity<BodyDto<User>> addUser(@Validated @RequestBody UserRequestDto userRequest) {
     return userService.addUser(userRequest);
   }
 
@@ -50,5 +51,4 @@ public class UserController {
 
   // TODO PUT endpoint
   // TODO PUT Request DTO
-  // TODO Post Request DTO
 }

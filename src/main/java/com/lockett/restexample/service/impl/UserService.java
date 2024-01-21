@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import com.lockett.restexample.controllers.UserController;
 import com.lockett.restexample.entities.User;
 import com.lockett.restexample.models.BodyDto;
+import com.lockett.restexample.models.UserRequestDto;
 import com.lockett.restexample.repositories.UserRepository;
 import com.lockett.restexample.service.UserServiceInterface;
 
@@ -43,16 +44,22 @@ public class UserService implements UserServiceInterface {
   }
 
   @Transactional
-  public ResponseEntity<BodyDto<User>> addUser(User userRequest) {
+  public ResponseEntity<BodyDto<User>> addUser(UserRequestDto userRequestDto) {
     try {
       logger.info("Creating new user...");
 
+      User newUser = new User();
       Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
-      userRequest.setCreatedAt(timeStamp);
-      userRequest.setUpdatedAt(timeStamp);
-      User newUser = userRepository.save(userRequest);
+
+      newUser.setFirstName(userRequestDto.getFirstName());
+      newUser.setLastName(userRequestDto.getLastName());
+      newUser.setEmail(userRequestDto.getEmail());
+      newUser.setCreatedAt(timeStamp);
+      newUser.setUpdatedAt(timeStamp);
+
+      User user = userRepository.save(newUser);
       BodyDto<User> body = new BodyDto<>();
-      body.setData(newUser);
+      body.setData(user);
       return ResponseEntity.ok(body);
     } catch (Exception e) {
       logger.error("Error creating new user...", e);

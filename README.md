@@ -1,3 +1,9 @@
+---
+noteId: "f7c6c4a0b87411eea9197b1938a46c82"
+tags: []
+
+---
+
 # Read Me First
 
 # Getting Started

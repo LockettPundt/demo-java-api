@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.lockett.restexample.entities.User;
 import com.lockett.restexample.models.BodyDto;
+import com.lockett.restexample.models.UserRequestDto;
 
 public interface UserServiceInterface {
 
@@ -15,5 +16,5 @@ public interface UserServiceInterface {
 
   ResponseEntity<BodyDto<Long>> deleteUser(long id);
 
-  ResponseEntity<BodyDto<User>> addUser(User userRequest);
+  ResponseEntity<BodyDto<User>> addUser(UserRequestDto userRequest);
 }

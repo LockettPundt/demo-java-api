@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.lockett.restexample.controllers.BloodPressureReadingController;
 import com.lockett.restexample.entities.BloodPressureReading;
+import com.lockett.restexample.models.BloodPressureRequestDto;
 import com.lockett.restexample.models.BodyDto;
 import com.lockett.restexample.repositories.BloodPressureReadingRepository;
 import com.lockett.restexample.service.BloodPressureReadingServiceInterface;
@@ -54,14 +55,20 @@ public class BloodPressureReadingService implements BloodPressureReadingServiceI
 
   @Transactional
   public ResponseEntity<BodyDto<BloodPressureReading>> addBloodPressureReading(
-      BloodPressureReading bloodPressureReadingRequest) {
+      BloodPressureRequestDto bloodPressureReadingRequestDto) {
     try {
       logger.info("Creating new blood pressure reading...");
 
+      BloodPressureReading newBloodPressureReading = new BloodPressureReading();
       Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
-      bloodPressureReadingRequest.setCreatedAt(timeStamp);
-      bloodPressureReadingRequest.setUpdatedAt(timeStamp);
-      BloodPressureReading newReading = bloodPressureReadingRepository.save(bloodPressureReadingRequest);
+
+      newBloodPressureReading.setDiastolicReading(bloodPressureReadingRequestDto.getDiastolicReading());
+      newBloodPressureReading.setSystolicReading(bloodPressureReadingRequestDto.getSystolicReading());
+      newBloodPressureReading.setComments(bloodPressureReadingRequestDto.getComments());
+      newBloodPressureReading.setUserId(bloodPressureReadingRequestDto.getUserId());
+      newBloodPressureReading.setCreatedAt(timeStamp);
+      newBloodPressureReading.setUpdatedAt(timeStamp);
+      BloodPressureReading newReading = bloodPressureReadingRepository.save(newBloodPressureReading);
       BodyDto<BloodPressureReading> body = new BodyDto<>();
       body.setData(newReading);
 

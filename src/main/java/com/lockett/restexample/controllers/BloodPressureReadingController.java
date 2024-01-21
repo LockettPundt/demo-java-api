@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lockett.restexample.entities.BloodPressureReading;
+import com.lockett.restexample.models.BloodPressureRequestDto;
 import com.lockett.restexample.models.BodyDto;
 import com.lockett.restexample.service.BloodPressureReadingServiceInterface;
 
@@ -38,7 +39,7 @@ public class BloodPressureReadingController {
 
   @PostMapping("/add-reading")
   public ResponseEntity<BodyDto<BloodPressureReading>> addBloodPressureReading(
-      @Validated @RequestBody @NonNull BloodPressureReading bloodPressureReadingRequest) {
+      @Validated @RequestBody @NonNull BloodPressureRequestDto bloodPressureReadingRequest) {
     return bloodPressureReadingService.addBloodPressureReading(bloodPressureReadingRequest);
   }
 
@@ -49,5 +50,4 @@ public class BloodPressureReadingController {
 
   // TODO PUT endpoint
   // TODO PUT Request DTO
-  // TODO Post Request DTO
 }
