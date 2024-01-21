@@ -16,6 +16,8 @@ import com.lockett.restexample.models.BodyDto;
 import com.lockett.restexample.repositories.BloodPressureReadingRepository;
 import com.lockett.restexample.service.BloodPressureReadingServiceInterface;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class BloodPressureReadingService implements BloodPressureReadingServiceInterface {
 
@@ -50,6 +52,7 @@ public class BloodPressureReadingService implements BloodPressureReadingServiceI
     }
   }
 
+  @Transactional
   public ResponseEntity<BodyDto<BloodPressureReading>> addBloodPressureReading(
       BloodPressureReading bloodPressureReadingRequest) {
     try {
@@ -70,6 +73,7 @@ public class BloodPressureReadingService implements BloodPressureReadingServiceI
     }
   }
 
+  @Transactional
   public ResponseEntity<BodyDto<Long>> deleteBloodPressureReading(long id) {
     try {
       Optional<BloodPressureReading> bloodPressureReading = bloodPressureReadingRepository.findById(id);

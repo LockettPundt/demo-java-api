@@ -18,8 +18,6 @@ import com.lockett.restexample.entities.BloodPressureReading;
 import com.lockett.restexample.models.BodyDto;
 import com.lockett.restexample.service.BloodPressureReadingServiceInterface;
 
-import jakarta.transaction.Transactional;
-
 @RestController
 @RequestMapping("/readings")
 public class BloodPressureReadingController {
@@ -39,14 +37,12 @@ public class BloodPressureReadingController {
   }
 
   @PostMapping("/add-reading")
-  @Transactional
   public ResponseEntity<BodyDto<BloodPressureReading>> addBloodPressureReading(
       @Validated @RequestBody @NonNull BloodPressureReading bloodPressureReadingRequest) {
     return bloodPressureReadingService.addBloodPressureReading(bloodPressureReadingRequest);
   }
 
   @DeleteMapping("/delete-reading/{id}")
-  @Transactional
   public ResponseEntity<BodyDto<Long>> deleteBloodPressureReading(@Validated @PathVariable(value = "id") long id) {
     return bloodPressureReadingService.deleteBloodPressureReading(id);
   }
